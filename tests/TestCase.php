@@ -1,22 +1,14 @@
 <?php
 
-namespace Climactic\Altcha\Altcha\Tests;
+declare(strict_types=1);
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+namespace Climactic\Altcha\Tests;
+
+use Climactic\Altcha\AltchaServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Climactic\Altcha\Altcha\AltchaServiceProvider;
 
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Climactic\Altcha\\Altcha\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-    }
-
     protected function getPackageProviders($app)
     {
         return [
@@ -26,12 +18,12 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
+        config()->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
         config()->set('database.default', 'testing');
-
-        /*
-         foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/../database/migrations') as $migration) {
-            (include $migration->getRealPath())->up();
-         }
-         */
+        config()->set('cache.default', 'array');
+        config()->set('altcha.enabled', true);
+        config()->set('altcha.hmac_secret', 'test-secret');
+        config()->set('altcha.cost', 500);
+        config()->set('altcha.expires', 300);
     }
 }
