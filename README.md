@@ -220,8 +220,10 @@ Route::get('/security/challenge', AltchaChallengeController::class)
 Install the ALTCHA web component:
 
 ```bash
-npm install altcha
+npm install altcha@^3
 ```
+
+> ⚠️ Requires `altcha` npm v3 or higher. This package's backend emits the altcha v2 nested challenge payload (`{ parameters, signature }`), which only altcha JS v3+ can parse.
 
 #### React (Inertia) stubs
 
@@ -262,7 +264,7 @@ The widget solves the challenge in a web worker and injects the solution into a 
 Vue, Svelte, Solid, Lit, Alpine, and plain HTML work out of the box with the `altcha` npm package — no wrapper needed:
 
 ```html
-<altcha-widget challengeurl="/altcha" auto="onsubmit" floating="bottom"></altcha-widget>
+<altcha-widget challenge="/altcha" auto="onsubmit" display="floating" configuration='{"floatingPlacement":"bottom"}'></altcha-widget>
 ```
 
 See the official [framework starters](https://github.com/altcha-org?q=altcha-starter) for idiomatic integrations.

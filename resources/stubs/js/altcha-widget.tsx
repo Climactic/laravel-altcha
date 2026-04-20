@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 type Props = {
     challengeUrl: string;
-    auto?: "onload" | "onsubmit" | "off";
+    auto?: "onload" | "onsubmit" | "onfocus" | "off";
     floating?: "auto" | "top" | "bottom";
     hideFooter?: boolean;
     name?: string;
@@ -19,12 +19,17 @@ export function AltchaWidget({
         import("altcha");
     }, []);
 
+    const configuration = useMemo(
+        () => JSON.stringify({ floatingPlacement: floating, hideFooter }),
+        [floating, hideFooter],
+    );
+
     return (
         <altcha-widget
             auto={auto}
-            challengeurl={challengeUrl}
-            floating={floating}
-            hidefooter={hideFooter}
+            challenge={challengeUrl}
+            configuration={configuration}
+            display="floating"
             name={name}
         />
     );
